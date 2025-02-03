@@ -32,78 +32,58 @@ public class BookApplication {
 
             if (selection.equals("1")) {
 
+                List<Book> listOfBooks = db.loadBooks();
+                List<Author> listOfAuthors = db.loadAuthors();
+                Map<Integer, List<String>> isbnMap = db.loadISBN();
 
+                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
+
+                library.getLibraryBooks().forEach(book -> {
+                    StringBuilder authorNames = new StringBuilder();
+                    for (Author author : book.getAuthorList()) {
+                        if (authorNames.length() > 0) {
+                            authorNames.append(", ");
+                        }
+                        authorNames.append(author.getFirstName()).append(" ").append(author.getLastName());
+                    }
+
+                    System.out.println(
+                            "ISBN: (" + book.getIsbn() + ") " + "Title: (" + book.getTitle() + ") " + "Edition Number: (" + book.getEditionNumber() + ") " + "Copyright: (" + book.getCopyright() + ") " + "Authors: (" + authorNames + ")");
+
+                });
 
             } else if (selection.equals("2")) {
 
+                List<Book> listOfBooks = db.loadBooks();
+                List<Author> listOfAuthors = db.loadAuthors();
+                Map<Integer, List<String>> isbnMap = db.loadISBN();
 
-//            if (selection.equals("1")) {
-//                List<Author> listOfAuthors = db.loadAuthors();
-//                List<Book> listOfBooks = db.loadBooks();
-//                Map<Integer, List<String>> isbnMap = db.loadISBN();
-//
-//                listOfAuthors.forEach(author -> {
-//                    if (isbnMap.containsKey(author.getAuthorID())) {
-//                        List<Book> books = new java.util.ArrayList<>(List.of());
-//
-//                        isbnMap.get(author.getAuthorID()).forEach(isbn -> {
-//
-//                            listOfBooks.forEach(book -> {
-//                                if (book.getIsbn().equals(isbn)) {
-//                                    books.add(book);
-//                                }
-//                            });
-//                        });
-//                        author.setBookList(books);
-//                        }
-//                    });
-//
-//
-//                if (listOfBooks.isEmpty()) {
-//                    System.out.println("No Books Found.");
-//                } else {
-//                    for (Book book : listOfBooks) {
-//                        System.out.println("ISBN: (" + book.getIsbn() + ") Title: (" + book.getTitle() + ") Edition Number: (" + book.getEditionNumber() + ") Copyright: (" + book.getCopyright() + ")");
-//                    }
-//
-//                }
-//
-//            } else if (selection.equals("2")) {
-//                List<Author> listOfAuthors = db.loadAuthors();
-//                List<Book> listOfBooks = db.loadBooks();
-//                Map<Integer, List<String>> isbnMap = db.loadISBN();
-//
-//                listOfAuthors.forEach(author -> {
-//                    if (isbnMap.containsKey(author.getAuthorID())) {
-//                        List<Book> books = new java.util.ArrayList<>(List.of());
-//
-//                        isbnMap.get(author.getAuthorID()).forEach(isbn -> {
-//
-//                            listOfBooks.forEach(book -> {
-//                                if (book.getIsbn().equals(isbn)) {
-//                                    books.add(book);
-//                                }
-//                            });
-//                        });
-//                        author.setBookList(books);
-//                    }
-//                });
-//
-//
-//                if (listOfAuthors.isEmpty()) {
-//                    System.out.println("No Authors Found.");
-//                } else {
-//                    for (Author author : listOfAuthors) {
-//                        System.out.printf("Author ID: (" + author.getAuthorID() + ") Title: (" + author.getFirstName() + ") Last Name: (" + author.getLastName() + ") " + "Books: ");
-//                        author.getBookList().forEach(book -> {
-//                            System.out.printf("(" + book.getTitle() + ")");
-//                        });
-//                        System.out.printf("\n");
-//                    }
-//
-//                }
+                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
+
+                library.getLibraryAuthors().forEach(author -> {
+                    StringBuilder bookTitles = new StringBuilder();
+
+                    for (Book book : author.getBookList()) {
+                        if (bookTitles.length() > 0) {
+                            bookTitles.append(", ");
+                        }
+                        bookTitles.append(book.getTitle());
+                    }
+
+                    System.out.println("Author: " + author.getFirstName() + " " + author.getLastName() +
+                            " | Books: (" + bookTitles + ")");
+                });
 
             } else if (selection.equals("3")) {
+
+                List<Book> listOfBooks = db.loadBooks();
+                List<Author> listOfAuthors = db.loadAuthors();
+                Map<Integer, List<String>> isbnMap = db.loadISBN();
+
+                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
+
+
+
 
             } else if (selection.equals("4")) {
 
