@@ -15,9 +15,7 @@ public class BookDatabaseManagerTest {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(QUERY);
 
-            // Extract data from result set
             while (rs.next()) {
-                // Retrieve by column name
                 System.out.print("isbn: " + rs.getString("isbn"));
                 System.out.print(", title: " + rs.getString("title"));
                 System.out.print(", editionNumber: " + rs.getInt("editionNumber"));
