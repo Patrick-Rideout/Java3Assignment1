@@ -9,14 +9,13 @@ import java.util.Map;
 public class BookDatabaseManager {
 
     private static final String DB_NAME = "/books";
+
     private static final String LOAD_BOOKS_QUERY = "SELECT isbn, title, editionNumber, copyright FROM titles";
     private static final String LOAD_AUTHORS_QUERY = "SELECT authorID, firstName, lastName FROM authors";
     private static final String LOAD_ISBN_QUERY = "SELECT authorID, isbn FROM authorisbn;";
 
+
 //    public static final String LOAD_ISBN_QUERY = "SELECT a.authorID, a.firstName, a.lastName, t.isbn, t.title, t.editionNumber, t.copyright FROM authors a JOIN authorISBN i ON a.authorID = i.authorID JOIN titles t ON i.isbn = t.isbn;\n";
-
-
-
 
     public List<Book> loadBooks() {
         List<Book> books = new ArrayList<Book>();
@@ -97,6 +96,48 @@ public class BookDatabaseManager {
         }
         return isbnMap;
     }
+
+    public void addBook(String ISBN, String title, int editionNumber, String copyright, List<Integer> authorIDs) {
+        try {
+
+            String ADD_BOOK = "INSERT INTO titles (isbn, title, editionNumber, copyright) VALUES (\'" + ISBN + "\', \'" + title + "\' , \'" + editionNumber + "\', \'" + copyright + "\');";
+
+            Connection conn = DriverManager.getConnection(
+                    DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(ADD_BOOK);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for (Integer authorID : authorIDs) {
+
+            String ADD_AUTHOR_LINK = "INSERT INTO authorisbn (authorID, isbn) VALUES (" + authorID + ", '" + ISBN + "');";
+
+            try {
+                Connection conn = DriverManager.getConnection(
+                        DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(ADD_AUTHOR_LINK);
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+    }
+
+
+
+
+
+
 
 
 

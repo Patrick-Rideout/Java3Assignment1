@@ -73,4 +73,12 @@ public class Library {
     public void setLibraryBooks(List<Book> libraryBooks) {
         this.libraryBooks = libraryBooks;
     }
+
+    public List<Integer> getAuthorIDs() {
+        List<Integer> authorIDs = new ArrayList<>();
+        libraryAuthors.forEach(author -> {
+            authorIDs.add(author.getAuthorID());
+        });
+        return authorIDs;
+    }
 }
