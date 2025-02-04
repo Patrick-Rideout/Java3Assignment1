@@ -21,7 +21,8 @@ public class BookApplication {
                     3. Edit Book
                     4. Edit Author
                     5. Add Book
-                    6. Quit
+                    6. Add Author
+                    7. Quit
                     """);
 
             System.out.println("\nENTER SELECTION:");
@@ -103,18 +104,19 @@ public class BookApplication {
                             break;
                         }
 
+                        String newEditionNumberInput;
                         int newEditionNumber;
                         while (true) {
                             System.out.println("Enter new Edition Number: ");
-                            String editionInput = input.nextLine();
+                            newEditionNumberInput = input.nextLine();
 
-                            if (editionInput.length() > 11) {
+                            if (newEditionNumberInput.length() > 11) {
                                 System.out.println("ERROR: Edition number cannot exceed 11 digits.");
                                 continue;
                             }
 
                             try {
-                                newEditionNumber = Integer.parseInt(editionInput);
+                                newEditionNumber = Integer.parseInt(newEditionNumberInput);
                                 break;
                             } catch (NumberFormatException e) {
                                 System.out.println("ERROR: Edition number must be an integer.");
@@ -148,8 +150,67 @@ public class BookApplication {
 
             } else if (selection.equals("4")) {
 
+                List<Book> listOfBooks = db.loadBooks();
+                List<Author> listOfAuthors = db.loadAuthors();
+                Map<Integer, List<String>> isbnMap = db.loadISBN();
 
-            } else if (selection.equals("5")) {
+                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
+
+                while (true) {
+                    int newAuthorID;
+                    while (true) {
+                        System.out.print("Enter Author ID to Edit: ");
+                        String newAuthorIDInput = input.nextLine();
+
+                        if (newAuthorIDInput.length() > 11) {
+                            System.out.println("ERROR: Author ID cannot exceed 11 digits.");
+                            continue;
+                        }
+
+                        try {
+                            newAuthorID = Integer.parseInt(newAuthorIDInput);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("ERROR: Author ID must be an integer.");
+                        }
+                    }
+
+                    if (!library.getAuthorIDs().contains(newAuthorID)) {
+                        System.out.println("ERROR: Author ID not found.");
+                        return;
+                    }
+
+                    String newFirstName;
+                    while (true) {
+                        System.out.print("Enter new First Name: ");
+                        newFirstName = input.nextLine();
+
+                        if (newFirstName.length() > 20) {
+                            System.out.println("ERROR: First Name cannot exceed 20 characters.");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    String newLastName;
+                    while (true) {
+                        System.out.print("Enter new Last Name: ");
+                        newLastName = input.nextLine();
+
+                        if (newLastName.length() > 30) {
+                            System.out.println("ERROR: Last Name cannot exceed 30 characters.");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    db.editAuthor(newAuthorID, newFirstName, newLastName);
+                    System.out.println("Author details updated successfully!");
+
+                    break;
+                }
+            }
+            else if (selection.equals("5")) {
 
                 List<Book> listOfBooks = db.loadBooks();
                 List<Author> listOfAuthors = db.loadAuthors();
@@ -183,18 +244,19 @@ public class BookApplication {
                     break;
                 }
 
+                String newEditionNumberInput;
                 int newEditionNumber;
                 while (true) {
                     System.out.println("Enter new Edition Number: ");
-                    String editionInput = input.nextLine();
+                    newEditionNumberInput = input.nextLine();
 
-                    if (editionInput.length() > 11) {
+                    if (newEditionNumberInput.length() > 11) {
                         System.out.println("ERROR: Edition number cannot exceed 11 digits.");
                         continue;
                     }
 
                     try {
-                        newEditionNumber = Integer.parseInt(editionInput);
+                        newEditionNumber = Integer.parseInt(newEditionNumberInput);
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println("ERROR: Edition number must be an integer.");
@@ -244,12 +306,49 @@ public class BookApplication {
                 db.addBook(newISBN, newTitle, newEditionNumber, newCopyright, newAuthorList);
 
             } else if (selection.equals("6")) {
-                break;
+
+                List<Book> listOfBooks = db.loadBooks();
+                List<Author> listOfAuthors = db.loadAuthors();
+                Map<Integer, List<String>> isbnMap = db.loadISBN();
+
+                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
+
+                String newFirstName;
+                String newLastName;
+                while (true) {
+                    System.out.println("Enter new First Name: ");
+                    newFirstName = input.nextLine();
+
+                    if (newFirstName.length() > 20) {
+                        System.out.println("ERROR: First Name cannot exceed 20 characters.");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                while (true) {
+                    System.out.println("Enter new Last Name: ");
+                    newLastName = input.nextLine();
+
+                    if (newLastName.length() > 30) {
+                        System.out.println("ERROR: Last Name cannot exceed 30 characters.");
+                        continue;
+                    }
+
+                    break;
+                }
+
+
+
+
+
+
+
+
+
+
             }
-
-
-
-
 
         }
 

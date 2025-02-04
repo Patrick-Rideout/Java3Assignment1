@@ -144,6 +144,21 @@ public class BookDatabaseManager {
         }
     }
 
+    public void editAuthor(Integer authorID, String firstName, String lastName) {
+
+        String EDIT_AUTHOR = "UPDATE authors SET firstName = \'" + firstName + "\', lastName = \'" + lastName + "\' WHERE authorID = \'" + authorID + "\';";
+
+        try {
+            Connection conn = DriverManager.getConnection(
+                    DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(EDIT_AUTHOR);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
