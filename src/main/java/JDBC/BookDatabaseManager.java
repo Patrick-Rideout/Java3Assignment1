@@ -126,11 +126,22 @@ public class BookDatabaseManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
         }
+    }
 
+    public void editBook(String ISBN, String newTitle, int newEditionNumber, String newCopyright) {
 
+        String EDIT_BOOK = "UPDATE titles SET title = \'" + newTitle + "\', editionNumber = " + newEditionNumber + ", copyright = \'" + newCopyright + "\' WHERE isbn = \'" + ISBN + "\';";
+
+        try {
+            Connection conn = DriverManager.getConnection(
+                    DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(EDIT_BOOK);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -143,4 +154,7 @@ public class BookDatabaseManager {
 
 
 
-}
+
+
+
+    }

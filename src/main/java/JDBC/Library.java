@@ -81,4 +81,12 @@ public class Library {
         });
         return authorIDs;
     }
+
+    public List<String> getBookISBNs() {
+        List<String> bookISBNs = new ArrayList<>();
+        libraryBooks.forEach(book -> {
+            bookISBNs.add(book.getIsbn());
+        });
+        return bookISBNs;
+    }
 }

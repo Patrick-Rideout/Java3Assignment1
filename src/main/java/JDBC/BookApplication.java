@@ -79,25 +79,72 @@ public class BookApplication {
 
                 Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
 
-                library.getLibraryBooks().forEach(book -> {
-                    StringBuilder authorNames = new StringBuilder();
-                    for (Author author : book.getAuthorList()) {
-                        if (authorNames.length() > 0) {
-                            authorNames.append(", ");
-                        }
-                        authorNames.append(author.getFirstName()).append(" ").append(author.getLastName());
+                while (true) {
+                    System.out.println("Enter an ISBN number to Edit: ");
+                    String userISBN = input.nextLine();
+
+                    if (userISBN.length() > 20) {
+                        System.out.println("ERROR: ISBN number cannot exceed 20 characters.");
+                        continue;
                     }
 
-                    System.out.println(
-                            "ISBN: (" + book.getIsbn() + ") " + "Title: (" + book.getTitle() + ") " + "Edition Number: (" + book.getEditionNumber() + ") " + "Copyright: (" + book.getCopyright() + ") " + "Authors: (" + authorNames + ")");
-                });
+                    if (library.getBookISBNs().contains(userISBN)) {
 
-                System.out.println("Enter an ISBN number: ");
-                String userISBN = input.nextLine();
+                        String newTitle;
+                        while (true) {
+                            System.out.println("Enter new Book Title: ");
+                            newTitle = input.nextLine();
 
+                            if (newTitle.length() > 100) {
+                                System.out.println("ERROR: Book title cannot exceed 100 characters.");
+                                continue;
+                            }
 
+                            break;
+                        }
 
+                        int newEditionNumber;
+                        while (true) {
+                            System.out.println("Enter new Edition Number: ");
+                            String editionInput = input.nextLine();
 
+                            if (editionInput.length() > 11) {
+                                System.out.println("ERROR: Edition number cannot exceed 11 digits.");
+                                continue;
+                            }
+
+                            try {
+                                newEditionNumber = Integer.parseInt(editionInput);
+                                break;
+                            } catch (NumberFormatException e) {
+                                System.out.println("ERROR: Edition number must be an integer.");
+                            }
+                        }
+
+                        String newCopyright;
+                        while (true) {
+                            System.out.println("Enter new Copyright Number: ");
+                            newCopyright = input.nextLine();
+
+                            if (newCopyright.length() > 4) {
+                                System.out.println("ERROR: Copyright number cannot exceed 4 characters.");
+                                continue;
+                            }
+
+                            db.editBook(userISBN, newTitle, newEditionNumber, newCopyright);
+
+                            System.out.println("UPDATE COMPLETE!");
+
+                            break;
+                        }
+
+                    } else {
+                        System.out.println("ERROR: ISBN not found in the library.");
+                        continue;
+                    }
+
+                    break;
+                }
 
             } else if (selection.equals("4")) {
 
@@ -110,16 +157,41 @@ public class BookApplication {
 
                 Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
 
-                System.out.println("Enter new ISBN Number: ");
-                String newISBN = input.nextLine();
+                String newISBN;
+                while (true) {
+                    System.out.println("Enter new ISBN Number: ");
+                    newISBN = input.nextLine();
 
-                System.out.println("Enter new Book Title: ");
-                String newTitle = input.nextLine();
+                    if (newISBN.length() > 20) {
+                        System.out.println("ERROR: ISBN number cannot exceed 20 characters.");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                String newTitle;
+                while (true) {
+                    System.out.println("Enter new Book Title: ");
+                    newTitle = input.nextLine();
+
+                    if (newTitle.length() > 100) {
+                        System.out.println("ERROR: Book title cannot exceed 100 characters.");
+                        continue;
+                    }
+
+                    break;
+                }
 
                 int newEditionNumber;
                 while (true) {
                     System.out.println("Enter new Edition Number: ");
                     String editionInput = input.nextLine();
+
+                    if (editionInput.length() > 11) {
+                        System.out.println("ERROR: Edition number cannot exceed 11 digits.");
+                        continue;
+                    }
 
                     try {
                         newEditionNumber = Integer.parseInt(editionInput);
@@ -129,10 +201,18 @@ public class BookApplication {
                     }
                 }
 
+                String newCopyright;
+                while (true) {
+                    System.out.println("Enter new Copyright Number: ");
+                    newCopyright = input.nextLine();
 
-                System.out.println("Enter new Copyright Number: ");
-                String newCopyright = input.nextLine();
+                    if (newCopyright.length() > 4) {
+                        System.out.println("ERROR: Copyright number cannot exceed 4 characters.");
+                        continue;
+                    }
 
+                    break;
+                }
 
                 List<Integer> newAuthorList = new ArrayList<>();
                 while (true) {
