@@ -14,6 +14,12 @@ public class BookApplication {
 
         while (true) {
 
+            List<Book> listOfBooks = db.loadBooks();
+            List<Author> listOfAuthors = db.loadAuthors();
+            Map<Integer, List<String>> isbnMap = db.loadISBN();
+
+            Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
+
             System.out.println("\nSelections:");
             System.out.println("""
                     1. Print Books
@@ -27,19 +33,14 @@ public class BookApplication {
 
             System.out.println("\nENTER SELECTION:");
             String selection = input.nextLine();
+            System.out.println();
 
             if (selection.equals("1")) {
-
-                List<Book> listOfBooks = db.loadBooks();
-                List<Author> listOfAuthors = db.loadAuthors();
-                Map<Integer, List<String>> isbnMap = db.loadISBN();
-
-                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
 
                 library.getLibraryBooks().forEach(book -> {
                     StringBuilder authorNames = new StringBuilder();
                     for (Author author : book.getAuthorList()) {
-                        if (authorNames.length() > 0) {
+                        if (!authorNames.isEmpty()) {
                             authorNames.append(", ");
                         }
                         authorNames.append(author.getFirstName()).append(" ").append(author.getLastName());
@@ -52,33 +53,20 @@ public class BookApplication {
 
             } else if (selection.equals("2")) {
 
-                List<Book> listOfBooks = db.loadBooks();
-                List<Author> listOfAuthors = db.loadAuthors();
-                Map<Integer, List<String>> isbnMap = db.loadISBN();
-
-                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
-
                 library.getLibraryAuthors().forEach(author -> {
                     StringBuilder bookTitles = new StringBuilder();
 
                     for (Book book : author.getBookList()) {
-                        if (bookTitles.length() > 0) {
+                        if (!bookTitles.isEmpty()) {
                             bookTitles.append(", ");
                         }
                         bookTitles.append(book.getTitle());
                     }
 
-                    System.out.println("Author: " + author.getFirstName() + " " + author.getLastName() +
-                            " | Books: (" + bookTitles + ")");
+                    System.out.println("Author ID: " + author.getAuthorID() + " Author: " + author.getFirstName() + " " + author.getLastName() + " | Books: (" + bookTitles + ")");
                 });
 
             } else if (selection.equals("3")) {
-
-                List<Book> listOfBooks = db.loadBooks();
-                List<Author> listOfAuthors = db.loadAuthors();
-                Map<Integer, List<String>> isbnMap = db.loadISBN();
-
-                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
 
                 while (true) {
                     System.out.println("Enter an ISBN number to Edit: ");
@@ -150,12 +138,6 @@ public class BookApplication {
 
             } else if (selection.equals("4")) {
 
-                List<Book> listOfBooks = db.loadBooks();
-                List<Author> listOfAuthors = db.loadAuthors();
-                Map<Integer, List<String>> isbnMap = db.loadISBN();
-
-                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
-
                 while (true) {
                     int newAuthorID;
                     while (true) {
@@ -211,12 +193,6 @@ public class BookApplication {
                 }
             }
             else if (selection.equals("5")) {
-
-                List<Book> listOfBooks = db.loadBooks();
-                List<Author> listOfAuthors = db.loadAuthors();
-                Map<Integer, List<String>> isbnMap = db.loadISBN();
-
-                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
 
                 String newISBN;
                 while (true) {
@@ -307,12 +283,6 @@ public class BookApplication {
 
             } else if (selection.equals("6")) {
 
-                List<Book> listOfBooks = db.loadBooks();
-                List<Author> listOfAuthors = db.loadAuthors();
-                Map<Integer, List<String>> isbnMap = db.loadISBN();
-
-                Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
-
                 String newFirstName;
                 String newLastName;
                 while (true) {
@@ -323,7 +293,6 @@ public class BookApplication {
                         System.out.println("ERROR: First Name cannot exceed 20 characters.");
                         continue;
                     }
-
                     break;
                 }
 
@@ -335,12 +304,12 @@ public class BookApplication {
                         System.out.println("ERROR: Last Name cannot exceed 30 characters.");
                         continue;
                     }
-
                     break;
                 }
 
-            }
+                db.addAuthor(newFirstName, newLastName);
 
+            }
         }
     }
 }

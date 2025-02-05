@@ -110,18 +110,32 @@ public class BookDatabaseManager {
 
         for (Integer authorID : authorIDs) {
 
-            String ADD_AUTHOR_LINK = "INSERT INTO authorisbn (authorID, isbn) VALUES (" + authorID + ", '" + ISBN + "');";
+            String ADD_AUTHOR_LINK = "INSERT INTO authorisbn (authorID, isbn) VALUES (" + authorID + ", \'" + ISBN + "\');";
 
             try {
                 Connection conn = DriverManager.getConnection(
                         DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(ADD_AUTHOR_LINK);
-
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void addAuthor(String firstName, String lastName) {
+
+        String ADD_AUTHOR = "INSERT INTO authors (firstName, lastName) VALUES (\'" + firstName + "\', \'" + lastName + "\');";
+
+        try {
+            Connection conn = DriverManager.getConnection(
+                    DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate(ADD_AUTHOR);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
