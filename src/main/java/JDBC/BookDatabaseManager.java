@@ -9,13 +9,9 @@ import java.util.Map;
 public class BookDatabaseManager {
 
     private static final String DB_NAME = "/books";
-
     private static final String LOAD_BOOKS_QUERY = "SELECT isbn, title, editionNumber, copyright FROM titles";
     private static final String LOAD_AUTHORS_QUERY = "SELECT authorID, firstName, lastName FROM authors";
     private static final String LOAD_ISBN_QUERY = "SELECT authorID, isbn FROM authorisbn;";
-
-
-//    public static final String LOAD_ISBN_QUERY = "SELECT a.authorID, a.firstName, a.lastName, t.isbn, t.title, t.editionNumber, t.copyright FROM authors a JOIN authorISBN i ON a.authorID = i.authorID JOIN titles t ON i.isbn = t.isbn;\n";
 
     public List<Book> loadBooks() {
         List<Book> books = new ArrayList<Book>();
@@ -98,10 +94,10 @@ public class BookDatabaseManager {
     }
 
     public void addBook(String ISBN, String title, int editionNumber, String copyright, List<Integer> authorIDs) {
+
+        String ADD_BOOK = "INSERT INTO titles (isbn, title, editionNumber, copyright) VALUES (\'" + ISBN + "\', \'" + title + "\' , \'" + editionNumber + "\', \'" + copyright + "\');";
+
         try {
-
-            String ADD_BOOK = "INSERT INTO titles (isbn, title, editionNumber, copyright) VALUES (\'" + ISBN + "\', \'" + title + "\' , \'" + editionNumber + "\', \'" + copyright + "\');";
-
             Connection conn = DriverManager.getConnection(
                     DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
             Statement stmt = conn.createStatement();
@@ -159,17 +155,42 @@ public class BookDatabaseManager {
         }
     }
 
+    public void deleteBook(String ISBN) {
 
+        String DELETE_AUTHOR_LINK = "DELETE FROM authorisbn WHERE isbn = \'" + ISBN + "\';";
+        String DELETE_BOOK = "DELETE FROM titles WHERE isbn = \'" + ISBN + "\';";
 
+        try {
+            Connection conn = DriverManager.getConnection(
+                    DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+            Statement stmt = conn.createStatement();
 
+            stmt.executeUpdate(DELETE_AUTHOR_LINK);
 
+            stmt.executeUpdate(DELETE_BOOK);
 
-
-
-
-
-
-
-
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void deleteAuthor(int authorID) {
+
+        String DELETE_AUTHOR_LINK = "DELETE FROM authorisbn WHERE authorID = " + authorID + ";";
+        String DELETE_AUTHOR = "DELETE FROM authors WHERE authorID = " + authorID + ";";
+
+        try {
+            Connection conn = DriverManager.getConnection(
+                    DBProperties.DATABASE_URL + DB_NAME, DBProperties.DATABASE_USER, DBProperties.DATABASE_PASSWORD);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate(DELETE_AUTHOR_LINK);
+
+            stmt.executeUpdate(DELETE_AUTHOR);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
