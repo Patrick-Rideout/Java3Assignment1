@@ -12,30 +12,23 @@ public class BookApplication {
     /**
      * The entry point of the application that runs a loop allowing the user to select various options
      * to interact with the library system.
-     *
-     * @param args Command line arguments (not used in this application).
-     */
+     * */
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
 
-        // Create an instance of BookDatabaseManager to interact with the database.
         BookDatabaseManager db = new BookDatabaseManager();
 
         System.out.printf("WELCOME TO THE BOOK APPLICATION\n");
 
-        // Main loop for user interaction with the system
         while (true) {
 
-            // Load books, authors, and ISBNs from the database
             List<Book> listOfBooks = db.loadBooks();
             List<Author> listOfAuthors = db.loadAuthors();
             Map<Integer, List<String>> isbnMap = db.loadISBN();
 
-            // Create a Library object with the loaded data
             Library library = new Library(listOfBooks, listOfAuthors, isbnMap);
 
-            // Display the menu options
             System.out.println("\nSelections:");
             System.out.println("""
                     1. Print Books
@@ -47,14 +40,11 @@ public class BookApplication {
                     7. Quit
                     """);
 
-            // Prompt the user to enter a selection
             System.out.println("\nENTER SELECTION:");
             String selection = input.nextLine();
             System.out.println();
 
-            // Perform the selected operation
             if (selection.equals("1")) {
-                // Print all books in the library
                 library.getLibraryBooks().forEach(book -> {
                     StringBuilder authorNames = new StringBuilder();
                     for (Author author : book.getAuthorList()) {
@@ -69,7 +59,6 @@ public class BookApplication {
                 });
 
             } else if (selection.equals("2")) {
-                // Print all authors in the library
                 library.getLibraryAuthors().forEach(author -> {
                     StringBuilder bookTitles = new StringBuilder();
 
@@ -84,7 +73,6 @@ public class BookApplication {
                 });
 
             } else if (selection.equals("3")) {
-                // Edit an existing book
                 while (true) {
                     System.out.println("Enter an ISBN number to Edit: ");
                     String userISBN = input.nextLine();
@@ -153,7 +141,6 @@ public class BookApplication {
                 }
 
             } else if (selection.equals("4")) {
-                // Edit an existing author
                 while (true) {
                     int newAuthorID;
                     while (true) {
@@ -208,7 +195,6 @@ public class BookApplication {
                     break;
                 }
             } else if (selection.equals("5")) {
-                // Add a new book
                 String newISBN;
                 while (true) {
                     System.out.println("Enter new ISBN Number: ");
@@ -297,7 +283,6 @@ public class BookApplication {
                 db.addBook(newISBN, newTitle, newEditionNumber, newCopyright, newAuthorList);
 
             } else if (selection.equals("6")) {
-                // Add a new author
                 String newFirstName;
                 String newLastName;
                 while (true) {

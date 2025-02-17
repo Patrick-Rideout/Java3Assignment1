@@ -9,7 +9,7 @@ public class DBProperties {
     /**
      * The URL for connecting to the MariaDB database.
      */
-    public static final String DATABASE_URL = "jdbc:mariadb://localhost:3306";
+    public static final String DATABASE_URL = "jdbc:mariadb://localhost:3305";
 
     /**
      * The username for the database connection.
